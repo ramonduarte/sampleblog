@@ -1,0 +1,42 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name todosquerem.uno *.todosquerem.uno;
+
+    if ($host = todosquerem.uno) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+}
+
+server {
+    # SSL configuration
+    listen 443 ssl;
+    listen [::]:443;
+    server_name *.todosquerem.uno;
+
+    return 301 https://todosquerem.uno$request_uri;
+}
+
+server {
+    listen 443 ssl http2 default_server;
+    listen [::]:443 ssl http2 default_server;
+    server_name todosquerem.uno;
+
+    ssl_certificate /path/to/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /path/to/privkey.pem; # managed by Certbot
+    include /path/to/options-ssl-nginx.conf;
+    ssl_dhparam /path/to/ssl-dhparams.pem;
+
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        alias /path/to/static/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/path/to/gunicorn.sock;
+    }
+
+}
+

@@ -7,15 +7,23 @@ Live soon at <https://todosquerem.uno>.
 
 ## Repository organization ##
 
-* [repo](repo) - Repository files.
 * [benchmark](benchmark) - Performance analysis.
-* [uno](uno) - Django project.
-* [project](project) - Management presentations.
+* [repo](repo) - Repository files.
 * [Pipfile](Pipfile) - Python dependencies.
+* [project](project) - Management presentations.
+  * [project/nginx/config](project/nginx/config) - Server configuration.
+* [uno](uno) - Django project.
+  * [uno/blog](uno/blog) - General blog design.
+  * [uno/frontend](uno/frontend) - ReactJS plugs for future API.
 
-## Version notes ##
+### Version notes ###
 
-### 0.0.0 (current) ###
+#### 0.0.1 (current) ####
+
+* Home page online.
+* Certbot TLS encryption.
+
+#### 0.0.0 ####
 
 * Repository setup.
 * Published under [MIT license](LICENSE).
