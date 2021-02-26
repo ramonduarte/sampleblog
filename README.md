@@ -13,15 +13,32 @@ Live soon at <https://todosquerem.uno>.
 * [project](project) - Management presentations.
   * [project/nginx/config](project/nginx/config) - Server configuration.
 * [uno](uno) - Django project.
+  * [uno/api](uno/api) - DRF API endpoints.
   * [uno/blog](uno/blog) - General blog design.
   * [uno/frontend](uno/frontend) - ReactJS plugs for future API.
 
 ### Version notes ###
 
-#### 0.0.1 (current) ####
+#### 0.0.2 (current) ####
+
+* API endpoints for Users, Posts, Comments and Categories.
+
+#### 0.0.1 ####
 
 * Home page online.
-* Certbot TLS encryption.
+* [Certbot](https://certbot.eff.org/) TLS encryption.
+* Now reliant on dependencies:
+
+```javascript
+     "@babel/core": "^7.13.1",
+     "@babel/preset-env": "^7.13.5",
+     "@babel/preset-react": "^7.12.13",
+     "babel-loader": "^8.2.2",
+     "react": "^17.0.1",
+     "react-dom": "^17.0.1",
+     "webpack": "^5.24.2",
+     "webpack-cli": "^4.5.0"
+```
 
 #### 0.0.0 ####
 
