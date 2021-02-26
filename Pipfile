@@ -5,8 +5,10 @@ name = "pypi"
 
 [packages]
 django = "*"
+gunicorn = "*"
 psycopg2-binary = "*"
 psycopg2 = "*"
+django-sslify = "*"
 djangorestframework = "*"
 
 [dev-packages]
