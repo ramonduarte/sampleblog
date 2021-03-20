@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import GitHubIcon from '@material-ui/icons/GitHub';
@@ -12,25 +10,10 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import Header from './Blog/Header';
 import MainFeaturedPost from './Blog/MainFeaturedPost';
 import FeaturedPost from './Blog/FeaturedPost';
-// import RegularPost from './Blog/RegularPost';
 import Main from './Blog/Main';
 import Sidebar from './Blog/Sidebar';
 import Footer from './Blog/Footer';
 
-
-// TODO: dynamic categories 2021-03-02 21:52:16
-const sections = [
-  { title: 'Technology', url: '#' },
-  { title: 'Design', url: '#' },
-  { title: 'Culture', url: '#' },
-  { title: 'Business', url: '#' },
-  { title: 'Politics', url: '#' },
-  { title: 'Opinion', url: '#' },
-  { title: 'Science', url: '#' },
-  { title: 'Health', url: '#' },
-  { title: 'Style', url: '#' },
-  { title: 'Travel', url: '#' },
-];
 
 // TODO: dynamic sidebar 2021-03-02 21:53:15
 const sidebar = {
@@ -100,7 +83,16 @@ class Blog extends Component {
           "imageText": "Loading",
           "linkText": ""
         }
-      ]
+    ],
+    categories: [
+      {
+        "id": 1,
+        "nicename": "",
+        "description": "",
+        "author": "",
+        "posts": []
+      }
+    ]
     };
   }
 
@@ -122,6 +114,20 @@ class Blog extends Component {
           };
         });
       });
+    fetch("categories/")
+      .then(response => {
+        if (response.status > 400) {
+          return this.setState(() => {
+            return { placeholder: "Something went wrong!" };
+        });
+      }
+      return response.json();
+    })
+    .then(categories => {
+      this.setState(() => {
+        return { categories };
+      });
+    });
   }
 
   render() {
@@ -129,7 +135,7 @@ class Blog extends Component {
       <React.Fragment>
         <CssBaseline />
           <Container maxWidth="lg">
-            <Header title="Blog" sections={sections} />
+            <Header title="Todos Querem Uno! Blog" sections={this.state.categories} />
             <main>
               <MainFeaturedPost post={this.state.data[0]} />
               <Grid container spacing={4}>
@@ -148,7 +154,7 @@ class Blog extends Component {
               </Grid>
             </main>
           </Container>
-          <Footer title="Footer" description="Something here to give the footer a purpose!" />
+          <Footer title="Todos Querem Uno! Blog" description="A place to make fun & enemies!" />
         </React.Fragment>
     );
   }

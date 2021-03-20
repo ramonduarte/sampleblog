@@ -10,6 +10,8 @@ psycopg2-binary = "*"
 psycopg2 = "*"
 django-sslify = "*"
 djangorestframework = "*"
+whitenoise = "*"
+django-storages = "*"
 
 [dev-packages]
 

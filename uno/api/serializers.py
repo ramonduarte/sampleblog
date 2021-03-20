@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import Post, Comment, Category
+from api.models import Post, Comment, Category, Tag, Status
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -9,7 +9,17 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'summary', 'content', 'author', 'comments', 'categories']
+        fields = [
+            'id',
+            'title',
+            'summary',
+            'content',
+            'author',
+            'comments',
+            'categories',
+            'tags',
+            'statuses'
+        ]
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,7 +29,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'posts', 'comments', 'categories']
+        fields = [
+            'id',
+            'username',
+            'posts',
+            'comments',
+            'categories',
+            'tags',
+            'statuses'
+        ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -36,4 +54,22 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
+        fields = ['id', 'nicename', 'description', 'author', 'posts']
+
+
+class TagSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Tag
+        fields = ['id', 'nicename', 'description', 'author', 'posts']
+
+
+class StatusSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Status
         fields = ['id', 'nicename', 'description', 'author', 'posts']

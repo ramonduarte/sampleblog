@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 class Post(models.Model):
     author = models.ForeignKey('auth.User', related_name='posts', on_delete=models.CASCADE)
     # 2021-02-23 21:13:36 TODO: status
-    # 2021-02-23 21:13:36 TODO: category
     # 2021-02-23 21:13:36 TODO: tag
     # 2021-02-23 21:13:36 TODO: type
     title = models.CharField(_("title"), max_length=100, blank=True, default='')
@@ -54,3 +53,35 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = _("categories")
+
+
+class Tag(models.Model):
+    nicename = models.CharField(_("nicename"), max_length=100, blank=False, default="")
+    description = models.CharField(_("description"), max_length=100, blank=False, default="")
+    author = models.ForeignKey('auth.User', related_name='tags', on_delete=models.CASCADE)
+    posts = models.ManyToManyField('Post', related_name='tags', blank=True)
+
+    class Meta:
+        verbose_name_plural = _("tags")
+
+
+class Status(models.Model):
+    NICENAME = models.TextChoices("Nicename",
+                                          " ".join([
+                                                    "Draft",
+                                                    "Published",
+                                                    "Suspended",
+                                                    "Removed",
+                                                    "Pending"
+                                                    ]))
+    nicename = models.CharField(_("nicename"),
+                                choices=NICENAME.choices,
+                                max_length=20,
+                                default=NICENAME.choices[0][0])
+    description = models.CharField(_("description"), max_length=100, blank=False, default="")
+    author = models.ForeignKey('auth.User', related_name='statuses', on_delete=models.CASCADE)
+    posts = models.ManyToManyField('Post', related_name='statuses', blank=True)
+
+    class Meta:
+        verbose_name_plural = _("statuses")
+
