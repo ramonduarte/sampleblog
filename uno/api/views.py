@@ -15,6 +15,11 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
 
+class UserNameDetail(generics.RetrieveAPIView):
+    lookup_field = "username"
+    queryset = User.objects.all()
+    serializer_class = serializers.UserSerializer
+
 
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()

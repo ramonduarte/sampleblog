@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 import { render } from "react-dom";
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,12 +21,12 @@ class BlogPost extends Component {
       loaded: false,
       data: {
           "id": 1,
-          "author": "Loading...",
-          "title": "Loading...",
-          "summary": "Loading",
+          "author": "",
+          "title": "",
+          "summary": "",
           "image": "",
-          "imageText": "Loading",
-          "linkText": ""
+          "imageText": "",
+          "linkText": "#"
       },
       categories: [
         {
@@ -36,19 +37,98 @@ class BlogPost extends Component {
           "posts": []
         }
       ],
+      author: {
+        "username": "",
+        "url": "#"
+      },
+      otherPosts: []
     };
   }
 
   componentDidMount() {
-    }
+    Promise.all([
+    ])
+      .then(([response]) => {
+        if (response.status > 400) {
+          return this.setState(() => {
+            return { placeholder: "Something went wrong!" };
+          });
+        } else {
+          return Promise.all([
+            response.json(),
+          ]);
+        }
+      })
+      .then(([data]) => {
+        this.setState(() => {
+          data.summary = data.content;
+          return {
+            data,
+            loaded: true
+          };
+        });
+        Promise.all([
+            ]);
+          }
+        })
+        .then(([author]) => {
+            this.setState(() => { return { author } });
+            author.posts.map(value => {
+              if (`${value}` !== `${blogid}`) {
+                Promise.all([
+                ])
+                    return this.setState(() => {
+                      return { placeholder: "Something went wrong!" };
+                    });
+                  } else {
+                    return Promise.all([
+                    ]);
+                  }
+                })
+                .then(([post]) => {
+                  this.setState(prevState => ({
+                    otherPosts: [
+                        ...prevState.otherPosts,
+                        {
+                          "title": post.title,
+                        }
+                      ]
+                  }));
+                });
+              }
+            });
+        });
+      });
+      .then(response => {
+        if (response.status > 400) {
+          return this.setState(() => {
+            return { placeholder: "Something went wrong!" };
+          });
+        }
+        return response.json();
+      })
+      .then(categories => {
+        this.setState(() => {
+          return { categories };
+        });
+      });
+  }
 
   render() {
     return (
       <React.Fragment>
         <CssBaseline />
           <Container maxWidth="lg">
+            <Header title="Todos Querem Uno! Blog" sections={this.state.categories} />
             <main>
+              <Paper 
+              >
+                <img style={{ display: 'none' }} src={this.state.data.image} alt={this.state.data.imageText} />
+              </Paper>
+                <Main title={this.state.data.title} posts={[this.state.data]} />
                 <Sidebar
+                  title={this.state.author.username}
+                  archives={this.state.otherPosts}
                 />
             </main>
           </Container>
