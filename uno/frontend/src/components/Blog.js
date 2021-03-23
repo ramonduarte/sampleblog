@@ -107,6 +107,7 @@ class Blog extends Component {
         return response.json();
       })
       .then(data => {
+        data.reverse();
         this.setState(() => {
           return {
             data,
@@ -144,7 +145,7 @@ class Blog extends Component {
                 ))}
               </Grid>
               <Grid container spacing={5} className={this.classes.mainGrid}>
-                <Main title="+4" posts={this.state.data.slice(3)} />
+                <Main title="Posts" posts={this.state.data.slice(3)} />
                 <Sidebar
                   title={sidebar.title}
                   description={sidebar.description}
