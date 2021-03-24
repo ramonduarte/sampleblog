@@ -45,6 +45,7 @@ class CommentList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
@@ -63,7 +64,14 @@ class CategoryList(generics.ListCreateAPIView):
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
-    serializer_class = serializers.PostSerializer
+    serializer_class = serializers.CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsAuthorOrReadOnly]
+
+class CategoryNameDetail(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = "nicename"
+    queryset = Category.objects.all()
+    serializer_class = serializers.CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly]
 
@@ -79,10 +87,16 @@ class TagList(generics.ListCreateAPIView):
 
 class TagDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
-    serializer_class = serializers.PostSerializer
+    serializer_class = serializers.TagSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly]
 
+class TagNameDetail(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = "nicename"
+    queryset = Tag.objects.all()
+    serializer_class = serializers.TagSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsAuthorOrReadOnly]
 
 class StatusList(generics.ListCreateAPIView):
     queryset = Status.objects.all()
@@ -95,6 +109,13 @@ class StatusList(generics.ListCreateAPIView):
 
 class StatusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Status.objects.all()
-    serializer_class = serializers.PostSerializer
+    serializer_class = serializers.StatusSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsAuthorOrReadOnly]
+
+class StatusNameDetail(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = "nicename"
+    queryset = Status.objects.all()
+    serializer_class = serializers.StatusSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly]

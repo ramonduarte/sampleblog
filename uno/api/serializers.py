@@ -26,17 +26,21 @@ class UserSerializer(serializers.ModelSerializer):
     posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     categories = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    userdescription = serializers.ReadOnlyField(source='userdescription.content')
+    social_links = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = User
         fields = [
             'id',
             'username',
+            'userdescription',
             'posts',
             'comments',
             'categories',
             'tags',
-            'statuses'
+            'statuses',
+            'social_links'
         ]
 
 

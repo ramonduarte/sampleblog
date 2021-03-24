@@ -78,13 +78,12 @@ class Tag(models.Model):
 
 class Status(models.Model):
     NICENAME = models.TextChoices("Nicename",
-                                          " ".join([
-                                                    "Draft",
-                                                    "Published",
-                                                    "Suspended",
-                                                    "Removed",
-                                                    "Pending"
-                                                    ]))
+                                  " ".join(["Draft",
+                                            "Published",
+                                            "Suspended",
+                                            "Removed",
+                                            "Pending"
+                                            ]))
     nicename = models.CharField(_("nicename"),
                                 choices=NICENAME.choices,
                                 max_length=20,
@@ -98,3 +97,37 @@ class Status(models.Model):
     class Meta:
         verbose_name_plural = _("statuses")
 
+
+class SocialLink(models.Model):
+    # TODO: restrict choices here 2021-03-23 22:05:01
+    nicename = models.CharField(_("nicename"),
+                                max_length=100, blank=False, default="")
+    description = models.CharField(_("description"),
+                                   max_length=100, blank=False, default="")
+    author = models.ForeignKey('auth.User', related_name='social_links',
+                               on_delete=models.CASCADE)
+    link = models.URLField(_("link"), max_length=200, blank=False,
+                             default="https://")
+
+    def __str__(self):
+        return self.link
+
+    def __unicode__(self):
+        return self.link
+
+
+    class Meta:
+        verbose_name_plural = _("social links")
+
+
+class UserDescription(models.Model):
+    author = models.OneToOneField("auth.User",
+                                  on_delete=models.CASCADE)
+    content = models.TextField(_("description"),
+                                 blank=False, max_length=200, default="")
+
+    def __str__(self):
+        return self.content
+
+    def __unicode__(self):
+        return self.content
