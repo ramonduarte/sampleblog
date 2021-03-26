@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import Post, Comment, Category, Tag, Status
+from api.models import Post, Comment, Category, Tag, Status, SocialLink
+
+
+class SocialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialLink
+        fields = ['nicename', 'link']
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -27,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
     comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     categories = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     userdescription = serializers.ReadOnlyField(source='userdescription.content')
-    social_links = serializers.StringRelatedField(many=True, read_only=True)
+    social_links = SocialSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -76,4 +82,4 @@ class StatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Status
-        fields = ['id', 'nicename', 'description', 'author', 'posts']
+        fields = ['id', 'nicename', 'author', 'posts']

@@ -24,6 +24,9 @@ class Post(models.Model):
     class Meta:
         ordering = ['created_at']
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     author = models.ForeignKey('auth.User', related_name='comments',
@@ -48,6 +51,8 @@ class Comment(models.Model):
     class Meta:
         ordering = ['created_at']
 
+    def __str__(self):
+        return self.title
 
 class Category(models.Model):
     nicename = models.CharField(_("nicename"),
@@ -62,6 +67,9 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = _("categories")
 
+    def __str__(self):
+        return self.nicename
+
 
 class Tag(models.Model):
     nicename = models.CharField(_("nicename"),
@@ -75,6 +83,8 @@ class Tag(models.Model):
     class Meta:
         verbose_name_plural = _("tags")
 
+    def __str__(self):
+        return self.nicename
 
 class Status(models.Model):
     NICENAME = models.TextChoices("Nicename",
@@ -88,8 +98,6 @@ class Status(models.Model):
                                 choices=NICENAME.choices,
                                 max_length=20,
                                 default=NICENAME.choices[0][0])
-    description = models.CharField(_("description"),
-                                   max_length=100, blank=False, default="")
     author = models.ForeignKey('auth.User', related_name='statuses',
                                on_delete=models.CASCADE)
     posts = models.ManyToManyField('Post', related_name='statuses', blank=True)
@@ -97,6 +105,8 @@ class Status(models.Model):
     class Meta:
         verbose_name_plural = _("statuses")
 
+    def __str__(self):
+        return self.nicename
 
 class SocialLink(models.Model):
     # TODO: restrict choices here 2021-03-23 22:05:01
@@ -114,7 +124,6 @@ class SocialLink(models.Model):
 
     def __unicode__(self):
         return self.link
-
 
     class Meta:
         verbose_name_plural = _("social links")

@@ -3,9 +3,6 @@ import { render } from "react-dom";
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
 import Header from './Blog/Header';
 import Paper from '@material-ui/core/Paper';
 import Main from './Blog/Main';
@@ -13,11 +10,11 @@ import Sidebar from './Blog/Sidebar';
 import Footer from './Blog/Footer';
 
 
-
 class BlogPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      origin: window.location.origin,
       loaded: false,
       data: {
           "id": 1,
@@ -39,7 +36,9 @@ class BlogPost extends Component {
       ],
       author: {
         "username": "",
-        "url": "#"
+        "url": "#",
+        "userdescription": "",
+        "social_links": []
       },
       otherPosts: []
     };
@@ -47,15 +46,16 @@ class BlogPost extends Component {
 
   componentDidMount() {
     Promise.all([
+      fetch(`${this.state.origin}/posts/${blogid}`),
     ])
-      .then(([response]) => {
-        if (response.status > 400) {
+      .then(([thisBlogResponse]) => {
+        if (thisBlogResponse.status > 400) {
           return this.setState(() => {
             return { placeholder: "Something went wrong!" };
           });
         } else {
           return Promise.all([
-            response.json(),
+            thisBlogResponse.json(),
           ]);
         }
       })
@@ -68,20 +68,36 @@ class BlogPost extends Component {
           };
         });
         Promise.all([
+          fetch(`${this.state.origin}/users/${data.author}`),
+        ])
+        .then(([authorResponse]) => {
+          if (authorResponse.status > 400) {
+            return this.setState(() => {
+              return { placeholder: "Something went wrong!" };
+            });
+          } else {
+            return Promise.all([
+              authorResponse.json(),
             ]);
           }
         })
         .then(([author]) => {
-            this.setState(() => { return { author } });
+            this.setState(() => {
+              return { author } 
+            });
             author.posts.map(value => {
               if (`${value}` !== `${blogid}`) {
                 Promise.all([
+                  fetch(`${this.state.origin}/posts/${value}`)
                 ])
+                .then(([otherPostResponse]) => {
+                  if (otherPostResponse.status > 400) {
                     return this.setState(() => {
                       return { placeholder: "Something went wrong!" };
                     });
                   } else {
                     return Promise.all([
+                      otherPostResponse.json(),
                     ]);
                   }
                 })
@@ -91,6 +107,7 @@ class BlogPost extends Component {
                         ...prevState.otherPosts,
                         {
                           "title": post.title,
+                          "url": `${this.state.origin}/blog/${post.id}`
                         }
                       ]
                   }));
@@ -99,6 +116,7 @@ class BlogPost extends Component {
             });
         });
       });
+    fetch(`${this.state.origin}/categories/`)
       .then(response => {
         if (response.status > 400) {
           return this.setState(() => {
@@ -127,8 +145,10 @@ class BlogPost extends Component {
               </Paper>
                 <Main title={this.state.data.title} posts={[this.state.data]} />
                 <Sidebar
-                  title={this.state.author.username}
+                  title={(this.state.author.username).replace("_", " ")}
+                  description={this.state.author.userdescription}
                   archives={this.state.otherPosts}
+                  social={this.state.author.social_links}
                 />
             </main>
           </Container>
