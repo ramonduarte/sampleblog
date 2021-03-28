@@ -24,7 +24,10 @@ class PostSerializer(serializers.ModelSerializer):
             'comments',
             'categories',
             'tags',
-            'statuses'
+            'statuses',
+            'image',
+            'alt_text',
+            'created_at'
         ]
 
 

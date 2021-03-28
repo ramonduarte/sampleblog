@@ -4,9 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
 import Header from './Blog/Header';
 import MainFeaturedPost from './Blog/MainFeaturedPost';
 import FeaturedPost from './Blog/FeaturedPost';
@@ -14,31 +11,6 @@ import Main from './Blog/Main';
 import Sidebar from './Blog/Sidebar';
 import Footer from './Blog/Footer';
 
-
-// TODO: dynamic sidebar 2021-03-02 21:53:15
-const sidebar = {
-  title: 'About',
-  description:
-    'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
-  archives: [
-    { title: 'March 2020', url: '#' },
-    { title: 'February 2020', url: '#' },
-    { title: 'January 2020', url: '#' },
-    { title: 'November 1999', url: '#' },
-    { title: 'October 1999', url: '#' },
-    { title: 'September 1999', url: '#' },
-    { title: 'August 1999', url: '#' },
-    { title: 'July 1999', url: '#' },
-    { title: 'June 1999', url: '#' },
-    { title: 'May 1999', url: '#' },
-    { title: 'April 1999', url: '#' },
-  ],
-  social: [
-    { name: 'GitHub', icon: GitHubIcon },
-    { name: 'Twitter', icon: TwitterIcon },
-    { name: 'Facebook', icon: FacebookIcon },
-  ],
-};
 
 class Blog extends Component {
   constructor(props) {
@@ -49,6 +21,7 @@ class Blog extends Component {
       },
     }));
     this.state = {
+      origin: window.location.origin,
       loaded: false,
       data: [
         {
@@ -57,7 +30,8 @@ class Blog extends Component {
           "summary": "Loading",
           "image": "",
           "imageText": "Loading",
-          "linkText": ""
+          "linkText": "",
+          "created_at": ""
         },
         {
           "id": 2,
@@ -65,7 +39,8 @@ class Blog extends Component {
           "summary": "Loading",
           "image": "",
           "imageText": "Loading",
-          "linkText": ""
+          "linkText": "",
+          "created_at": ""
         },
         {
           "id": 3,
@@ -73,7 +48,8 @@ class Blog extends Component {
           "summary": "Loading",
           "image": "",
           "imageText": "Loading",
-          "linkText": ""
+          "linkText": "",
+          "created_at": ""
         },
         {
           "id": 4,
@@ -81,7 +57,8 @@ class Blog extends Component {
           "summary": "Loading",
           "image": "",
           "imageText": "Loading",
-          "linkText": ""
+          "linkText": "",
+          "created_at": ""
         }
     ],
     categories: [
@@ -97,14 +74,14 @@ class Blog extends Component {
   }
 
   componentDidMount() {
-    fetch("posts/")
-      .then(response => {
-        if (response.status > 400) {
+    fetch(`${this.state.origin}/posts/`)
+      .then(postsResponse => {
+        if (postsResponse.status > 400) {
           return this.setState(() => {
             return { placeholder: "Something went wrong!" };
           });
         }
-        return response.json();
+        return postsResponse.json();
       })
       .then(data => {
         data.reverse();
@@ -115,14 +92,14 @@ class Blog extends Component {
           };
         });
       });
-    fetch("categories/")
-      .then(response => {
-        if (response.status > 400) {
+    fetch(`${this.state.origin}/categories/`)
+      .then(categoriesResponse => {
+        if (categoriesResponse.status > 400) {
           return this.setState(() => {
             return { placeholder: "Something went wrong!" };
         });
       }
-      return response.json();
+      return categoriesResponse.json();
     })
     .then(categories => {
       this.setState(() => {
@@ -147,10 +124,10 @@ class Blog extends Component {
               <Grid container spacing={5} className={this.classes.mainGrid}>
                 <Main title="Posts" posts={this.state.data.slice(3)} />
                 <Sidebar
-                  title={sidebar.title}
-                  description={sidebar.description}
-                  archives={sidebar.archives}
-                  social={sidebar.social}
+                  title="Todos Querem Uno"
+                  description="A blog dedicated to the most friendship-damaged game ever played."
+                  archives={[{title: "", url: "#"}]}
+                  social={[{nicename: "Facebook", link: "#"}]}
                 />
               </Grid>
             </main>

@@ -152,6 +152,7 @@ class BlogPost extends Component {
                 />
             </main>
           </Container>
+          <Footer title="Todos Querem Uno! Blog" description="A place to make fun & enemies!" />
         </React.Fragment>
     );
   }

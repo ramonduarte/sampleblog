@@ -20,12 +20,16 @@ class Post(models.Model):
     # 2021-02-23 21:13:36 TODO: comments_enabled
     # 2021-02-23 21:13:36 TODO: likes
     # 2021-02-23 21:13:36 TODO: dislikes
+    image = models.URLField(_("image"), max_length=200,
+                            default="https://source.unsplash.com/random")
+    alt_text = models.CharField(_("alt text"), max_length=50,
+                                blank=True, default="")
 
     class Meta:
         ordering = ['created_at']
 
     def __str__(self):
-        return self.title
+        return "{}: {}".format(self.author, self.title)
 
 
 class Comment(models.Model):
