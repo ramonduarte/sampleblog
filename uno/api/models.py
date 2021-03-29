@@ -31,6 +31,11 @@ class Post(models.Model):
     def __str__(self):
         return "{}: {}".format(self.author, self.title)
 
+    # TODO: change to permalink 2021-03-28 22:08:53
+    @property
+    def link(self):
+        return "/blog/{}".format(self.id)
+
 
 class Comment(models.Model):
     author = models.ForeignKey('auth.User', related_name='comments',

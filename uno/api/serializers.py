@@ -27,7 +27,8 @@ class PostSerializer(serializers.ModelSerializer):
             'statuses',
             'image',
             'alt_text',
-            'created_at'
+            'created_at',
+            'link'
         ]
 
 

@@ -125,7 +125,7 @@ class Blog extends Component {
                 <Main title="Posts" posts={this.state.data.slice(3)} />
                 <Sidebar
                   title="Todos Querem Uno"
-                  description="A blog dedicated to the most friendship-damaged game ever played."
+                  description="A blog dedicated to the most friendship-damaging game ever played."
                   archives={[{title: "", url: "#"}]}
                   social={[{nicename: "Facebook", link: "#"}]}
                 />
